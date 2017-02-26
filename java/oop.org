@@ -1,0 +1,44 @@
+* oop in java
+** class
+*** A `.java` file can only contain one public class declaration.
+#+BEGIN_SRC java
+  public class MyClass extends Parent
+  implements Interface0,Interface1{
+
+  }
+#+END_SRC
+
+- Class can only extends one other class, i.e. java not support multiple inheritance. But a class can implement multiple interface, just like mixins in other functional languages.
+
+- The entry class should have a `main` function as entry point:
+#+BEGIN_SRC java
+  public static void main(String[] args){
+
+  }
+#+END_SRC
+
+
+** inherit
+*** basic
+#+BEGIN_SRC java
+  public class<T> MyClass{
+      public static <T> int myFunc(T a){
+
+      }
+
+  }
+#+END_SRC
+
+*** generic class and generic functions.
+
+****  Bound generics.
+ To restrict the class types you want in the generic class or function, use `extends`:
+#+BEGIN_SRC java
+  public class<T extends Number> NumberProcessor{
+
+  }
+#+END_SRC
+
+This will restrict the class only accept `Number` subclasses.
+
+*** The inheritance of type variable does not

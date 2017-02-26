@@ -1,0 +1,96 @@
+#+title: java oop
+#+author: dumeng
+#+setupfile: ../../org-html-themes/setup/theme-readtheorg.setup
+
+** class
+
+#+BEGIN_SRC scala
+  class MyClass{
+  }
+  class MyClass2(...args){
+
+  }
+#+END_SRC
+
+*** class inheritance
+#+BEGIN_SRC scala
+    class Class1 extends Base{
+    }
+    class Base2(arg1:Type1){
+    }
+    class Class2(arg0:Type0,arg1:Type1) extends Base2(arg1){
+    }
+
+#+END_SRC
+
+*** case class
+case class is a little like the enumeration in swift. Swift extends the enumeration and struct to make them have ability like class, while scala use a prifix `case` to make a class behave like enumeration.
+The parameters in a case class constructor will be a member variable, like mark `var` or `val` in an ordinary class constructor.
+
+** object
+Object is a singleton class.
+You can also use *case* to decorate it.
+
+Object is designed to replace *static* in java.
+Since Object is just an object, you can move the class static method like factory method in traditional class declaration to the object body.
+
+*** trait
+The *trait* is like interface in java and protocal of swift.
+You can use trait to achieve multiple inheritance.
+#+BEGIN_SRC scala
+  class FinalClass extends Base with Trait0 with Trait1 {
+
+  }
+
+#+END_SRC
+
+-----
+
+** function
+
+Normal defination:
+#+BEGIN_SRC scala
+  def func(x:Int):Int = x*x
+#+END_SRC
+
+Enormous function:
+#+BEGIN_SRC scala
+  def enor = (x:Int)=>x*x
+  //or
+  val enor = (x:Int)=>x*x
+#+END_SRC
+
+#+BEGIN_QUOTE
+The difference between *def* and *val*: def will not evaluate the right-side expression when defined, instead it will be evaluated immedeatily when called.
+#+END_QUOTE
+
+
+*** Parameterless function:
+#+BEGIN_SRC scala
+  var x = 3
+  def less = x*x
+#+END_SRC
+
+#+BEGIN_QUOTE
+ Just like the computed variable in swift, the parameterless function can be called as *less*.
+You can define with an empty ~()~:
+
+#+BEGIN_SRC scala
+   def less()=x*x
+#+END_SRC
+
+Then you can call it by ~less~ or ~less()~.
+#+END_QUOTE
+
+*Note*: This is the principle called *uniform access principle*, which states that variables and parameterless functions should be accessed using the same syntax.
+
+*** parameter call by name
+By default the parameter in function is called by value, which means then will be evaluated before execute the function body.
+You can :
+#+BEGIN_SRC scala
+  def func(x:Int, y: => Int)={
+  }
+#+END_SRC
+to make the ~y~ called by name.
+
+*warning*: The ~=>~ should has a space before it. Because the ~=>Int~ is in fact a function: ~()=>Int~

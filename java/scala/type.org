@@ -1,0 +1,12 @@
+** type
+
+Take type *T'* as the subclass of *T*, then question is what is the class hierachy between *C[T]* and *C[T']*.
+In scala you can add
+
+-----
+
+- Covariant: - C[T'] is a subclass of C[T] - Scala notation: [+T]
+
+- Contravariant: - C[T] is a subclass of C[T'] - Scala notation: [-T]
+
+- Invariant: - C[T] and C[T'] are not related - Scala notation: [T]

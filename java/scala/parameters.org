@@ -1,0 +1,34 @@
+** in *class* declaration
+*** 1
+#+BEGIN_SRC scala
+  class My(x:Int){
+  }
+#+END_SRC
+
+Without any prefix before the parameter will make the variable be *private*.
+#+BEGIN_SRC scala
+  class My(val x :Int){
+  }
+#+END_SRC
+
+Add a *var* or *val* will make the parameter be a member variable.
+
+*** 2
+*RepeatedParameter*:
+#+BEGIN_SRC scala
+  class A(xs:Int*){
+
+  }
+  var a = new A(3,4,5)
+#+END_SRC
+
+The *xs* is like a list, you can operate *toList* or *mkString*.
+If you want a collection be expanded in parameter list, add ~:_*~:
+#+BEGIN_SRC scala
+  class B(col:Int_*){
+  }
+  var b = new B(List(3,4,5))
+#+END_SRC
+
+
+** in function

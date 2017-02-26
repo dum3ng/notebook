@@ -1,0 +1,114 @@
+Python has built-in i18n support, it exists in `gettext` module.
+
+** use `gettext` module
+
+If you just use one language at one time, then use:
+
+#+BEGIN_SRC python
+import gettext
+
+# the `language` will be decided to current system
+gettext.bindtextdomain('profile','appname/locale') 
+# .mo file is searched in  `appname/locale/language/LC_MESSAGES/profile.mo`
+# change to another domain
+# .mo file is searched in  `appname/locale/language/LC_MESSAGES/setting.mo
+gettext.textdomain('setting')
+_ = gettext.gettext()
+# usage
+print(_('hello'))
+#+END_SRC
+
+If you want to change language on the fly, then you can use global class:
+
+#+BEGIN_SRC python
+print('heool')
+def add():
+    return 3
+add()
+#+END_SRC
+
+#+RESULTS:
+: None
+
+#+BEGIN_SRC python
+import gettext
+
+path = 'path/to/locale'
+lang1 = gettext.translation('domain',path, languages=['en'])
+lang1.install() # this will make `_` function to python build-in namespace
+print(_('hello')) # 'hello'
+
+lang2 = gettext.translation('domain',path, languages=['zh_CN'])
+lang2.install()
+print(_('hello')) # '你好'
+#+END_SRC
+
+** use `Babel` to generate files
+See the [document](http://babel.pocoo.org/en/latest/messages.html#messages).
+
+In the `setup.py` of the root package, you need not to do anything if `babel` is installed and using `setuptools` in this file. Just run `python setup.py COMMAND`.
+
+*** step 1: extract messages
+
+#+BEGIN_SRC bash
+$ python setup.py extract_messages -o appname/locale messages.pot
+#+END_SRC
+
+This will extract  messages from source files to appname/locale/messages.pot. That is to search all the functions `_('string')`.
+`pot` is `Portable Object Template`.
+Now we can use this template file to generate different locale po file.
+
+### step 2: init locale file
+```bash
+$ python setup.py init_catalog -l zh_CN -i appname/locale/messages.pot -d appname/locale --domain appname
+```
+This will create `appname/locale/zh_CN/LC_MESSAGES/appname.po`.
+
+### step 3: compile po file
+```bash
+$ python setup.py compile_catalog -d appname/locale -l zh_CN --domain appname
+```
+This will compile the `appname.po` file into `appname.mo`.
+
+**configure file**
+Use option parameter in command line is tedious, you can create a `setup.cfg` file to set these paramters:
+
+#+BEGIN_SRC conf
+# setup.cfg file
+[compile_catalog]
+directory=appname/locale
+domain=appname
+
+[extract_messages]
+output-file=appname/locale/messages.pot
+
+[init_catalog]
+input-file=appname/locale/messages.pot
+domain=appname
+output-dir=appname/locale
+
+[update_catalog]
+input-file=appname/locale/messages.pot
+domain=appname
+output-dir=appname/locale
+#+END_SRC
+
+** something to note
+
+- The domain name is default to the name of `pot` file.
+- The po file when using `compile_catalog` is searched under base directory postfixed with locale(which is identified with `-l`).
+
+
+** using in Flask
+Flask use jinja2 as template engine, and jinja2 has extension of i18n. But I have not find a way to customize the jinja2 enviroment a flask app use without making a subclass of `Flask`.
+An alternative method is to use context processor:
+
+#+BEGIN_SRC python
+@app.context_processor
+def add_i18n():
+  return dict(_=_)
+#+END_SRC
+
+This will add the global `_` (alias of `gettext`) to the render context. 
+Now you can use `_` in your templates.
+

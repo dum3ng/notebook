@@ -1,0 +1,26 @@
+The *atob* and *btoa* function converts between ASCII and binary string.
+The *a* stanards for ASCII which is base64, and the *b* repsents for binary which is the string to be encoded.
+
+But they will throw an exception if the string is unicoded. Use function below instead:
+#+BEGIN_SRC js
+  function atou(s){
+      return   decodeURIComponent(escape( window.atob(s)))
+  }
+  function utoa(s){
+      return  window.btoa(unescape(encodeURIComponent(s)))
+  }
+#+END_SRC
+
+For the *utoa()*, first use *encodeURIComponent* to make the unicode transforms to hexadecimal string. Since every uncode char is formed by 3 word( double Byte), it has the form:
+#+BEGIN_SRC js
+    %xx%xx%xx  //xx is a 16-based
+#+END_SRC
+And then use *unescape* to convert the hexadecimal to ASCII charcode. That is to say every unicode is encoded into 3 ASCII .
+Finally use the *btoa* to encode the ASCII string to base64 ASCII string.
+
+Vise versa for the *atou*.
+
+-----
+#+BEGIN_QUOTE
+The content of a file in github is encoded in to base64, and most perhaps are converted using *utoa* function.
+#+END_QUOTE

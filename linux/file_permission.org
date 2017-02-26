@@ -1,0 +1,56 @@
+** using number
+The 9 bits permission system behave like this:
+#+BEGIN_QUOTE
+    -r  4
+    -w  2
+    -x  1
+#+END_QUOTE
+i.e.
+
+=$chmod 777 file      // rwxrwxrwx=
+This makes current user, group contains current user and others have complete control over this file.
+#+BEGIN_QUOTE
+    rwxrwxrwx
+    |--|--|--|
+      |  |  |----------other user permission
+      |  |------current group permission
+      |---current usr permission
+#+END_QUOTE
+
+** using character
+#+BEGIN_QUOTE
+    a //all user
+    u  //current user
+    g  // current group
+    -----------------
+    +  // add permission
+    -  // remove permission
+    ----------------------
+    r  // read
+    w  // write
+    x  // execute
+#+END_QUOTE
+i.e:
+#+BEGIN_QUOTE
+    // make it executable for all
+=$chmod a+x file=
+
+    // remove write permission except for current user
+=$ chmod go-w file=
+#+END_QUOTE
+
+** extra option
+Add *-R* to incursivly change mode
+
+    =$ chmod -R a+x  /home/user/Document=
+
+** using *umask*
+The *umask* is like the converse of permission code. It just remove the permission when a bit is 1.
+
+    =$ umask  // 0002=
+The default umask is *0002*, the will result in a created folder with permission =rwxrwxr-x(775)=.
+-----
+You can change it temporily by :
+
+    =$ umask 022=
+To permanently change it, you can add this command in *.bashrc* file.

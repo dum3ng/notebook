@@ -1,0 +1,43 @@
+There is no *static* in scala, and you can move all the static method you want to the companion object of the class.
+
+#+BEGIN_SRC scala
+  class SomeClass{
+
+  }
+  object SomeClass{
+
+  }
+#+END_SRC
+
+** 1 override *apply* function.
+
+The apply function has special meaning in scala. The call to it will transform to call the class instance or the object itself. You can use it to represent subscript , like in swift does with `subscript`, but with a bracket not square bracket.
+So by override *apply* in an object, you can get :
+
+#+BEGIN_SRC scala
+  object SomeClass{
+       def apply(arg0:T0) = ...
+       def apply(arg0:T0, arg1:T1) = ...
+       ...
+  }
+#+END_SRC
+Use *apply* in companion object to do factory creation work, and use *apply* in class to do instance real work.
+
+** 2 Use *this*
+
+#+BEGIN_SRC scala
+  class A(x:Int, s:String){
+      def this(x:Int) = this(x,"")
+      def this(s:String) = this(0,s)
+      def this(x:Int,y:Int,z:Int) = {this(x);
+      ...// other initialization with y, z
+      }
+  }
+      // now you can use
+  var a = new A(3)
+  var b = new A("hello")
+  var c = new A(3,4,5)
+#+END_SRC
+
+No matter how the parameter list of *this* method changed, it will finally fall to call the constructor ~A(Int,String)~.
+It is like *designated initializer* and *convient initializer*. The constructor is a designated initializer, and the other this methods are all convient initializers.

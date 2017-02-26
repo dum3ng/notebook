@@ -1,0 +1,9 @@
+* notebook
+
+ This is the notebook written with org-mode in emacs.
+
+Editing by org-mode.
+
+Searching by ag.el
+
+Orgnized by folders.mk

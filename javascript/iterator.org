@@ -1,0 +1,23 @@
+** iterator
+The *Symbol* has a built-in variable called *iterator*, which can be used to make your own iterator function.
+
+#+BEGIN_SRC js
+  //1
+  var obj = {}
+
+  //2
+  Object.defineProperty(obj,
+      Symbol.iterator,
+      { value: function(){
+              return {
+                  next: function(){
+                      return {
+                          value: <somevalue>,
+                          done: <bool-expresson>
+                      }
+                  }
+              }
+          }
+      }
+  )
+#+END_SRC

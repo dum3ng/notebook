@@ -1,0 +1,15 @@
+- $who am i :: print current user
+
+- $grep username /etc/passwd
+
+- $date :: current date
+
+- $ pwd :: current process work directory
+
+- $ hostname :: current computer name
+
+- $ source ./.bashrc :: refresh the configure file to make the changes working
+
+- $ alias :: show current alias command , or set a new alias
+
+- $ history :: list command history, use exclamation `!` to execute a history command: `!127`

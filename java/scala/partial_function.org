@@ -1,0 +1,31 @@
+** 1 Make a partially applied function
+#+BEGIN_SRC scala
+  def part(x:Int, y:Int, z:Int) = x+y+z
+
+  def part1 = part(x:Int,3,_:Int)
+
+  def part2 = part(_:Int, _:Int, 10)
+#+END_SRC
+
+Note that you can arbitrarily apply any or some number of parameters in different position.
+
+** 2 Use currying
+
+You can directly define curried function:
+#+BEGIN_SRC scala
+  def curry(x:Int)(y:Int) = x*y
+
+  val double = curry(2)
+#+END_SRC
+
+Or you can make a normal function to curried:
+#+BEGIN_SRC scala
+    def normal(x:Int, y:Int) = x*y
+
+    val curry = normal.curried
+
+    val tripple = curry(3)
+#+END_SRC
+
+-----
+Both way have their goods. Choose by the situation.

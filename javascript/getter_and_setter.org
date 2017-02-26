@@ -1,0 +1,26 @@
+** setter and getter
+Javascript also has a setter and getter mechanism.
+Just use keyword *get* and *set*:
+
+#+BEGIN_SRC js
+  var obj = {
+
+      get pro(){
+          return this.__pro*2
+      }
+      set pro(val){
+          this.__pro = val + 1
+      }
+  }
+  // or use Object.defineProperty
+
+   Object.defineProperty(obj,
+      "b",
+      get:function (){
+          return this.__b
+      }
+      set:function(val){
+          this.__b = val + "something"
+      }
+  )
+#+END_SRC
