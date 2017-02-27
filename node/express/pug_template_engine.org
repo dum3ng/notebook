@@ -1,0 +1,82 @@
+Express use engine to render the corresponding template file.
+Jade, now called pug, is the often-used template language.
+
+A simple start:
+#+BEGIN_SRC pug
+  doctype html
+  html(lang='en')
+      head
+          title 'this is title'
+      body
+#+END_SRC
+
+---
+*** include
+The behaviour may be a little wierd.
+#+BEGIN_SRC pug
+  //test1
+  include ./some.jade
+  div after include
+
+  //test2
+  include ./some.jade
+      div after include
+
+  //test3
+  include ./header.jade
+              div i am same with second
+      div i should be with footer
+  //test4
+  include ./header.jade
+      div i am same with second
+  div i should be with footer
+#+END_SRC
+
+- In test1, the div after include will have the same level with the root tag in the included file.
+- In test2, the div will inserted like the *include* is the last tag. So the div will be the child of the last tag.
+- In test3, the result is just the same with test4. Jade do not care the indentations before the first line after include, and consider it as the direct child just when it's not same level with *include*
+------
+*Conlusion:*
+
+- Use extends to make template.
+- Only use include to make some resusable frags.
+- And always place the tag just below *include* with same level.
+
+---
+*** inline
+inline jade tag:
+#+BEGIN_SRC pug
+    p something contains a link #[a(href='#')]
+#+END_SRC
+
+inline variabel:
+#+BEGIN_SRC pug
+  - var name = 'me'
+  p this will contains variable #{name}
+#+END_SRC
+
+*Traps:*
+If you want to use a variable, you must use an equal notation just behind the tag:
+
+    title= title
+*DO NOT* add any space!
+
+You can send value to the variables in render:
+#+BEGIN_SRC js
+  res.render('index.pug',{title:'o I am a title'}
+
+  // send the rendered view to the client
+  res.render('index');
+
+  // if a callback is specified, the rendered HTML string has to be sent explicitly
+  res.render('index', function(err, html) {
+    res.send(html);
+  });
+
+  // pass a local variable to the view
+  res.render('user', { name: 'Tobi' }, function(err, html) {
+    // ...
+  });
+#+END_SRC
+
+*note:* The ~send()~ will set the response type to default 'text/plain'

@@ -1,0 +1,45 @@
+*** the macros
+Serveral macros defined in *compojure* like *defroutes*, *routes*, *context* and http method *GET*,*POST*,etc, are just request handlers.
+
+*** middleware
+The middleware in the namespace *ring.middleware*, can wrap the handler and make the request go through a new function and do some work like add a header or parse url query, then return a new handler.
+Middleware has the general style like:
+
+    wrap-xxxx
+    //usage
+    (wrap-xxx handler)
+
+---
+*** some problems
+
+- I use the *wrap-defaults* and *site-defaults*, but can not do a http POST request. ::
+
+The answer is the *site-defaults* has a middleware *wrap-anti-forgery*, if you set the key *[:secure :anti-forgery]* to *true*, then the post must contain a valid CSRF-token, otherwise any POST request will be blocked.
+You can use
+
+    (wrap-defaults handler (assoc-in site-defaults [:secure :anti-forgery] false ))
+
+to disable this feature.
+
+- I use the *wrap-defaults* and *site-defaults*, then the session feature should be enabled, but the server just doesnot work, there is no any session value under the *session* key. ::
+
+The problem may be caused if you use *lein-ring*, and make a local handler in your server function:
+#+BEGIN_SRC clojure
+  //project.clj
+  :ring {:handler myapp.core/server}
+  // myapp.core.clj
+  (defn server [req]
+      (let [handler (wrap-app app)]
+          (handler req)))
+#+END_SRC
+
+This will make a new handler when receive a new request, so the session store will be reset that you can not see the change.
+To solve this, you need create the handler outside the server function to maintain it:
+#+BEGIN_SRC clojure
+  (def handler
+      (wrap-app app))
+  (defn server [req]
+      (handler req))
+#+END_SRC
+
+If you use *jetty/run-jetty* to run a not interactive process, there will no problem.

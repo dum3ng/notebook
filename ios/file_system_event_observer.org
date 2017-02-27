@@ -1,0 +1,31 @@
+Below is one way to observe file changed in a directory:
+#+BEGIN_SRC swift
+  class DirectoryWatcher {
+
+  deinit {
+
+      source.cancel()
+      close(fileDescriptor)
+  }
+
+  init(URL: URL, block: @escaping (Void)->Void) {
+
+      fileDescriptor = open(URL.path, O_EVTONLY)
+      source = DispatchSource.makeFileSystemObjectSource(fileDescriptor: fileDescriptor, eventMask: DispatchSource.FileSystemEvent.all)
+
+      source.setEventHandler(handler: {
+          DispatchQueue.main.async {
+              block()
+          }
+      })
+
+      source.resume()
+  }
+
+  private let fileDescriptor: CInt
+  private let source: DispatchSourceFileSystemObject
+  }
+#+END_SRC
+
+*Note*:This could only watch current url, not contains its subfolders.
+And, the file touch events are not observered.

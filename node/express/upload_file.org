@@ -1,0 +1,31 @@
+The html file should like this:
+
+#+BEGIN_SRC html
+  <form method = 'POST' enctype='mulitpart/form-data'>
+      <input type='file' name='image'/>
+      <input type='text' name = 'name'/>
+  </form>
+#+END_SRC
+
+When using the ~multipart/form-data~, the  ~body-parser~ would not work. You should fetch every name in the form using some middleware which can parse multipart stream such as ~multiparty~:
+#+BEGIN_SRC js
+  var multiparty = require('multiparty')
+  var form = new multiparty.Form()
+  form.parse(req,function(error,fields,files){
+      var name = fields.name[0]
+      var prop = files.image[0]
+
+      var path = prop.path
+  })
+#+END_SRC
+*Note*: that values in both fields and files is an array just as their name reveals.
+And the ~path~ in the files property is the absolute path, that you could not use directly. You can change it to relative path:
+#+BEGIN_SRC js
+  var path = require('path')
+  // add a '/' prefix
+  var rela = '/' + path.relative(process.cwd(),prop.path)
+#+END_SRC
+
+---
+*** res.download
+Seems the  ~path~ parameter in res.download(path) should be the **absolute** path. So do not forget to convert it.

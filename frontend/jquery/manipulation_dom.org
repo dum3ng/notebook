@@ -1,0 +1,40 @@
+** one start
+#+BEGIN_SRC js
+  $('img').hide(duration,callback)
+#+END_SRC
+Note that the element will disappear with an animation.
+
+** loop
+If you retrive one element from the result returned by jquery's selection, the one will be a pure document element while not a jqurey element:
+#+BEGIN_SRC js
+  var ele = $('img')[0] // document element
+
+  var $ele = $($('img')[0]) // jquery element
+#+END_SRC
+You can use `$` to wrap it to make a jquery element.
+*Note:*
+Every jquery select result return an jquery object which is an array contains the plain document object(s)!
+
+** function vs filter
+one example:
+#+BEGIN_SRC js
+  //use function
+  var $ele = $('img').eq(2)
+  //use filter
+  var $ele = $('img:eq(2)')
+
+#+END_SRC
+>Use the function instead of filter because the former will have better performance.
+
+** attribute Vs property
+
+- If the attribute exists as a built-in (native) property of the corresponding DOM object, the value is synchronized. For example, title is a standard attribute and exists in the DOM element representing an image. Therefore, any change of its value will result in an update in the related property and vice versa.
+- If the attribute exists as a built-in property but it’s a Boolean, the value isn’t syn- chronized. For example, checked retrieved as an attribute gives you the initial state of the check box element (null if not defined, as in our element). If retrieved as a property, regardless of whether it was defined or not, you obtain a Boolean (true if checked, false otherwise) of the current state of the element.
+- If the attribute doesn’t exist as a built-in property, it won’t be created and the value won’t be synchronized. For example, the book attribute won’t be created as a property of the DOM element.
+
+#+BEGIN_SRC js
+  // attribute
+  $.attr()
+  //property
+  $.prop()
+#+END_SRC

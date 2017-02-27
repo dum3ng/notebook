@@ -1,0 +1,108 @@
+* clojure introduction
+** basic types
+
+ - boolean   ::   true | false
+ - number    ::   3
+ - string    ::   "Hello"
+ - character ::    \a
+ - ratio     ::  3/4
+ - set       ::    #{:a :b :c}    (set [coll])
+ - list      ::  '(a b c )   (list a b c)
+ - map       ::  {:a 1 :b 2 :c 3 }  (hash-map :a 1 :b 2 :c 3 )
+ - vector    ::   [:a :b :c]   (vector :a :b :c)
+ - nil       ::  nil
+ - symbol    ::  'sym
+ - keyword   ::    :key
+
+-----
+- *Note* :: In clojure, only  nil  and  false  is logically falsy.
+
+*** symbol
+The symbol is a little confusing if you come from other OO language.
+*Symbol* just means the literal characters you used to represent your vars, while `var` is the address which the `object` you stored at.
+
+#+BEGIN_EXAMPLE
+    symbol ----> var ----->object
+#+END_EXAMPLE
+-----
+If you type the symbol directly in the REPL, it evaluate it, and if the symbol does not exist , an error will be thrown.
+So you should add a single quote before symbol when you just means to treat the symbol as `data` while not an `expression`:
+
+#+BEGIN_EXAMPLE
+    user=> (1 2 3 ) ; error , 1 is treated a function
+    user=> '(1 2 3) ; treat the symbol as data,i.e a list
+#+END_EXAMPLE
+
+** namespace
+*** refer
+#+BEGIN_SRC clojure
+  clojure.core/refer 'somens
+  //you can use filter
+  clojure.core/refer 'somens :exclude ['excluded,.. ]
+  clojure.core/refer 'somens :only ['want,in]
+#+END_SRC
+
+When using refer, REPL just update current object map and add the functions in the namespace you refered to it. So you can directly use them while not necessary to write a prefix.
+
+*** alias
+#+BEGIN_SRC clojure
+    clojure.core/alias 'short 'somens
+#+END_SRC
+
+There is a special var called `*ns*` binded with current namespace. You can manipulate this var to change current space. Usually we use `ns  ` macro to do this.
+#+BEGIN_SRC clojure
+    (ns new-namespace)
+#+END_SRC
+*** use
+#+BEGIN_SRC clojure
+  (ns new-namespace)
+  (use 'clojure.data.json)
+#+END_SRC
+The `use` macro can import all the functions in that namespace like those are written in this file. This could cause name collision and may be confusing because you use some function that has not been defined.
+
+*** require
+#+BEGIN_SRC clojure
+  (ns new-namespace)
+  (require '(clojure.data [json :as json-lib]))
+#+END_SRC
+Now you can use `(json-lib/parse ..)`.
+
+*** import
+
+The `import` is used to import java library.
+#+BEGIN_SRC clojure
+  (import 'java.util.Date)
+#+END_SRC
+or:
+#+BEGIN_SRC clojure
+  (ns my-namespace
+      (:import [java.util Date Calendar]))
+#+END_SRC
+
+*** common usage
+#+BEGIN_SRC clojure
+  (ns new-namespace
+      (:require [clojure.data.json :as json-lib] ))
+#+END_SRC
+
+** java interop
+*** Member access
+#+BEGIN_SRC clojure
+  (.instanceMember instance args*)
+  (.instanceMember Classname args*)
+  (.-instanceField instance)
+  (Classname/staticMethod args*)
+  Classname/staticField
+#+END_SRC
+
+*** The Dot special form
+
+#+BEGIN_SRC clojure
+  (. instance-expr member-symbol)
+  (. Classname-symbol member-symbol)
+  (. instance-expr -field-symbol)
+  (. instance-expr (method-symbol args))
+ (. instance-expr method-symbol args)
+  (. Classname-symbol (method-symbol args))
+ (. Classname-symbol method-symbol args)
+#+END_SRC

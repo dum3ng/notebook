@@ -1,0 +1,99 @@
+** create nib file and class file
+
+ - Create ~MyView.xib~ and ~MyView.swift~ file.
+MyView is a subclass of NSView.
+ - Set the xib file's file-owner to the class file, and make a ~view~ reference of the content view in the xib file to the class file.
+
+** do the init
+You need implement the two init method:
+#+BEGIN_SRC swift
+    override init(frame frameRect: NSRect) {
+      super.init(frame: frameRect)
+      let name = self.className
+      let names = name.components(separatedBy: CharacterSet(charactersIn: "."))
+      let realName = names.last!
+      if self != nil {
+          if Bundle.main.loadNibNamed(realName, owner: self, topLevelObjects: nil){
+            self.setFrameSize(self.view.frame.size)
+            self.addSubview(self.view)
+
+          }
+      }
+
+  }
+
+  init( coder:NSCoder){
+      super.init(coder:coder)
+  }
+#+END_SRC
+*Note*:
+
+- If your classname will have a prefix of project name, so the real classname will be the last component after splited.
+- Since the view is instantiated from the nib file, so if you want the view to be the same size as designed, you set the framesize to the ~self.view.frame.size~:
+#+BEGIN_SRC swift
+  self.setFrameSize(self.view.frame.size)
+#+END_SRC
+That means parameter assigned in the initializer only matters with the ~frameOrigin~ while not ~frameSize~.
+
+--------------
+#version2
+From [[http://supereasyapps.com/blog/2014/12/15/create-an-ibdesignable-uiview-subclass-with-code-from-an-xib-file-in-xcode-6][supereasyapps]]
+** create a xib file
+
+** create a class inherited from UIView
+
+** set the file -owner
+set file-owner of the xib file to the class you just defined.
+
+** implement the initializers
+You should implement both the ~init(frame)~ and ~init?(coder)~, if you want make the class be rendered by xcode through add ~@IBDesignable~:
+#+BEGIN_SRC swift
+  override init(frame:CGRect){
+      // variable init
+
+      //super
+      super.init(frame:frame)
+      //extra works
+  }
+
+  required init?(coder aDecoder:NSCoder){
+
+      super.init(coder:aDecoder)
+  }
+#+END_SRC
+
+**  instantiate xib file in your class
+define two hepler function:
+#+BEGIN_SRC swift
+  var view:UIView!
+  func loadView()->UIView{
+      let nib = UINib(nibName:"yourclass",bundle:Bundle(for:yourclass.self))
+      let view = nib.instantiate(withOwner:self,options:nil)[0] as! UIView
+      return view
+  }
+  func config(){
+      view = loadView()
+      //make the view be exact size with self
+      view.frame = bounds
+      view.autoResizeMask = [.flexibleWidth,
+          .flexibleHeight]
+
+      addSubview(view)
+  }
+#+END_SRC
+>**~warning~**:You should use the bundle identified with you class while NOT the main bundle, otherwise the ibdesigner will not load the nib file.
+
+** add @IBDesignable and @IBInspectable
+@IBDesignable will make the class rendered by xcode, and @IBInspectable will make the variable exposed in the property tab.
+
+The ~@IBInspectable~ variables should be a property, i.e. a caculated value.
+#+BEGIN_SRC swift
+  @IBInspectable var color:UIColor{
+      get{
+          return _color
+      }
+      set{
+          _color = newValue
+      }
+  }
+#+END_SRC

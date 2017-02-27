@@ -1,0 +1,27 @@
+** class variable
+variables defined at class level are all class variables.
+#+BEGIN_SRC python
+  class My:
+      x = 3
+      y = 4
+      def __init__(self):
+          self.private = "private"
+#+END_SRC
+
+** instance variable
+Since every function contains a `self`  as first parameter, the variables of instance should be defined with a prefix `self`.
+
+- note :: class variables are shared between instances and class. But they are not static, and if an instance defined a variable with same name, the new variable will overwrite the class one.
+
+-----
+** public and private
+There is no access decorator in python, all variables defined are public, and can be accessed.
+For private variables, you can define them with double low hysens:
+#+BEGIN_SRC python
+  class Your:
+      __x = 3
+      def __init__(self):
+          self.__private = "private"
+#+END_SRC
+There is a convension that those variables are private and can not be accessed directly because they are automatically add a prefix *_<className>_*
+, so the =__x= and =__private= be =_Your__x= and =_Your__private=.

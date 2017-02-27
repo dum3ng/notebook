@@ -1,0 +1,16 @@
+#+BEGIN_EXAMPLE
+    mouseenter
+    mouseleave
+    mouseover
+    mouseout
+#+END_EXAMPLE
+The *mouseenter* and *mouseleave* be triggered when the mouse enter or leave the  boundary of the element.
+While the *mouseover* and *mouseout* is triggered considering the descending element on the parent.
+
+** hover
+*.hover()* is a handy function jquery provided to manage teh `mouseenter` and `mouseleave` event.
+#+BEGIN_SRC js
+    .hover(enterHandler, outHandler)
+    //or
+    .hover(handler)
+#+END_SRC

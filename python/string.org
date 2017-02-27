@@ -1,0 +1,12 @@
+*** string format
+Use %(<name>)s to capture a value from the flollowing dictionary:
+#+BEGIN_SRC python
+# format method
+"Hello, {0} {1}".format('Mr.', 'Trump')
+
+# list
+"Hello, %s %s" % ('Mr.', 'Trump')
+
+# dictionary
+"a string with your %(name)s and %(age)s" % {"name":"katty", "age":28}
+#+END_SRC

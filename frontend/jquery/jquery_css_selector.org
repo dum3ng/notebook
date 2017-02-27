@@ -1,0 +1,79 @@
+    E F // F as the child of E
+    E>F // F as the direct child of E
+    E+F // F as the direct sibling of E
+    E~F // F as the sibling of E
+
+attribute selector
+just like the regix expression, the `^` and `$` will act as the `begin with` and `end with`
+
+#+BEGIN_EXAMPLE
+    input[name^='fav'] // input tag with a name attribute which begin with 'fav'
+    input[name$='ite'] //input tag with a name attribute which end with 'ite'
+
+    E[A] // E tag with an explicitly attribute A
+    E[A='a'] //E tag with an attribute A equal to a
+    E[A^='a'] // attribute A starts with 'a'
+    E[A$='a'] // E tag with attribute A ends with 'a'
+    E[A!='a'] // E tag with attribue A not equal to 'a' . `warning`: may be slow
+    E[A|='a'] // E tag with attribute A equal to 'a' or start with 'a-'  . As prefix.
+    E[A*='a'] // equal to 'a' or contain 'a'
+    E[A~='a'] // equal to 'a' or  has 'a' with space as delimeter
+#+END_EXAMPLE
+
+** filter
+#+BEGIN_EXAMPLE
+    :first //first element in the results
+    :last
+    :even
+    :odd
+    :lt(n)  // less than nth
+    :gt(n)  // greater than nth
+    :eq(n)  //equal to nth
+#+END_EXAMPLE
+
+** child
+#+BEGIN_EXAMPLE
+    :first-child
+    :last-child
+    :nth-child(n)
+    :nth-first-child
+    :nth-last-child
+    :nth-child(Xn+Y)
+#+END_EXAMPLE
+The differences between `*-child` and `*` is :
+ - the `*-child` is compatible with css so the index start with `1`, while the latte start with `0`
+ - The preer is relative to the element with its sibling , while the latter is relative to the results
+
+** custom-filter
+Jquery defined some filter to make selecting element more handy:
+#+BEGIN_EXAMPLE
+    :button
+    :checkbox
+     :checked
+     :disabled
+     :enabled
+     :file
+     :focus
+     :image
+     :input
+     :password
+     :radio
+     :reset
+     :selected
+     :submit
+    :text
+
+#+END_EXAMPLE
+
+** extra filters
+#+BEGIN_EXAMPLE
+     :animated
+     :header
+     :hidden
+     :lang(language)
+     :not(selector)
+     :root
+     :target
+     :visible
+
+#+END_EXAMPLE

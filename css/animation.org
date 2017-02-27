@@ -1,0 +1,64 @@
+** property
+#+BEGIN_SRC css
+  @keyframes frameName{
+      from {property: value;  }
+      to {property: value1; }
+  }
+  //or
+  @keyframes frameName{
+      0% {property: value;  }
+      20% {property: value1; }
+      100% {property: value2; }
+  }
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+    Initial value	as each of the properties of the  shorthand:
+
+    animation-name: none
+    animation-duration: 0s
+    animation-timing-function: ease
+    animation-delay: 0s
+    animation-iteration-count: 1
+    animation-direction: normal
+    animation-fill-mode: none
+    animation-play-state: running
+    //handy
+    animation: [name] [duration]
+#+END_EXAMPLE
+
+** transform
+
+** transition
+   If you want add transition between normal state and hover or focus state, then add the transition property in **normal** state.
+#+BEGIN_SRC css
+  input{
+    border-style:solid;
+    border-color:red;
+    transition: border-color 1s;
+  }
+  input:focus{
+      border-color:green;
+  }
+#+END_SRC
+   Then there will have transition both on focus and lose focus.
+   And for sure you can add another transition to make different effect between two states.
+
+*** transition-duration
+    The property `transition-duration` can used not only when explicitly declared the transition, but also there are two state to transist between.
+    Like a normal and hover state, you could just write:
+#+BEGIN_SRC css
+  .class{
+      transition-duration: 1s;
+  }
+  .class:hover{
+     skdfjks: sd;
+
+  }
+#+END_SRC
+That will constraint the duration time when hover the element.
+*Tips*:
+#+BEGIN_QUOTE
+- The `transition-duration` is the time from other state to this state.
+- See a detail in [[http://www.w3schools.com/css/tryit.asp?filename=trycss_buttons_animate2][button animation]].
+#+END_QUOTE

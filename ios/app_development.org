@@ -1,0 +1,222 @@
+** start of an application
+The application use a main function as the entry point, the file is created by xcode and is replaced by a compiler symbol  ~@NSApplicationMain~  automatically in xcode 8.
+#+BEGIN_SRC objc
+  #import "AppDelegate.h"
+
+  int main(int argc, char * argv[]) {
+      @autoreleasepool {
+          return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
+      }
+  }
+#+END_SRC
+The osx version will be:
+#+BEGIN_SRC objc
+  #import "AppDelegate.h"
+
+  int main(int argc, char * argv[]) {
+      @autoreleasepool {
+          return NSApplicationMain(0,nil);
+      }
+  }
+#+END_SRC
+
+*** From storyboard
+    If you use a stroyboard, and set the content controller in window  as initial controller, then the application will automacally load files you want, and what you need to do is implement the methods in ~NSApplicationDelegate~:
+#+BEGIN_SRC objc
+  //typically would be the applicationDidLaunch
+   func applicationDidFinishLaunching(_ aNotification: Notification) {
+   // the notification is the applicationDidFinishLaunching notification send by the system.
+
+   // do more thing.
+   }
+#+END_SRC
+
+*** From xib file
+**** from a window xib file
+#+BEGIN_SRC objc
+  @NSApplicationMain
+  class AppDelegate:NSObject, NSApplicationDelegate{
+      let windowController = MyWindowController()
+
+      override func awakeFromNib(){
+          windowController.showWindow(nil)
+      }
+  }
+#+END_SRC
+
+     Create a reference of your windowcontroller and in the ~awakeFromNib~ make the window shown.
+
+**** from a viewcontroller xib file
+     You can also not use a window xib file, and just create viewcontroller you need.
+#+BEGIN_SRC objc
+
+   @NSApplicationMain
+  class AppDelegate:NSObject, NSApplicationDelegate{
+      let controller = NSWindowControll()
+
+      override func awakeFromNib(){
+         controller.window = NSWindow(contentViewController: TestViewController())
+       controller.showWindow(nil)
+      }
+  }
+#+END_SRC
+
+** #2 Relationship between xib file and class file
+*** xib and controller
+The NSViewController class has a property ~nibName~, you can specify the value to load xib file when the controller is created. And if you donot override the property, the application will try to find a xib file with the same name of your class.
+#+BEGIN_SRC objc
+  override var nibName:String {
+      return "yourclassname"
+  }
+#+END_SRC
+
+The specified nib file should typically have the class of the file's owner set to NSViewController, or a custom subclass, with the view outlet(in the file owner) connected to a view( typically would be the rootview in xib file).
+
+------
+If you dynamically created a controller, and add its view to current presented view, you should be sure to keep a reference to the controller if you want do some interaction to its view. Otherwise there will a runtime error such as ~unrecognized selector send to instance XXXXXX~ because the controller is already deallocted and teh message is sent to the instance occupied the same address where the deallocated controller has occupied.
+Or, you can use the ~delegate~ pattern with move the method to a delegate protocal.
+
+
+---
+
+*** xib and view
+If you relate a xib file with a NSView subclass, you should override the ~init~ method:
+#+BEGIN_SRC objc
+   override init(frame frameRect: NSRect) {
+      super.init(frame: frameRect)
+      let name = self.className
+      let names = name.components(separatedBy: CharacterSet(charactersIn: "."))
+      let realName = names.last!
+      if self != nil {
+          if Bundle.main.loadNibNamed(realName, owner: self, topLevelObjects: nil){
+
+            self.setFrameSize(self.view.bounds.size)
+              self.addSubview(self.view)
+
+          }
+      }
+
+  }
+
+  required init?(coder: NSCoder) {
+      super.init(coder: coder)
+  }
+#+END_SRC
+And in the xib file, connect the ~view~ outlet in the file-owner to the root view ( first you should set the file owner to your custom class).
+
+The ~Bundle.main.loadNibNamed(:::)~ method will load the components in the nib file as the ~view~ property. After that you add it to your self view.
+And you can also use another method:
+#+BEGIN_SRC objc
+  let nib = NSNib(nibNamed: cn, bundle: Bundle.main)
+  if  nib?.instantiate(withOwner: self, topLevelObjects: nil){
+    self.addSubview(self.view)
+  }
+#+END_SRC
+to instantiate the nib file.
+
+---
+>The most important point is that set the file owner and connect the view outlet.
+
+** kvo pattern
+*** KVO
+KVO pattern can enable the controller observe the changes in the model and the view observe the controller so the view could be changed when model altered.
+
+*** register as observer
+First you should make self as an observer throught the method:
+#+BEGIN_SRC swift
+  observed.addObserver(_ object:, forKeyPath:, change:,
+  context:)
+#+END_SRC
+
+*** do something
+Override the :
+#+BEGIN_SRC swift
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?)
+#+END_SRC
+
+*** actions to trigger the observer
+If the class is a subclass of NSObject, then the properties and variables which fullfill the kvo compliant would be automatically ....
+#+BEGIN_SRC swift
+  observerd.setValue(value, forKey:"someKey")
+
+  parent.setValue(value,forKeyPath:"observerd.someKey")
+#+END_SRC
+The direct assignment would not trigger the observerd object to send messages.
+And what's more, in the swift, although the computed value has an obj-c getter and setter if you declared them, they could not be called directly, that is to say:
+#+BEGIN_SRC swift
+  observerd.setMyKey("value")
+#+END_SRC
+is not acceessible.
+
+*** manually change notification
+You can use the :
+#+BEGIN_SRC swift
+
+  self.willChangeValue(forKey: "non")
+
+  self.didChangeValue(forKey: "non")
+#+END_SRC
+
+to manually send notifications where you want.
+
+And by overrid the class method :
+#+BEGIN_SRC swift
+  override class func automaticallyNotifiesObservers(forKey key: String) -> Bool{
+
+      var observer = true
+      if key == "save"{
+          observer = false
+      }
+      return observer
+  }
+#+END_SRC
+You can controll whether the value change should trigger the notification.
+
+** concurrency and asynchronous
+
+Typically you can use  ~DispatchQueue~ to execute asynchronous work, and get the global dispatchqueue to do concurrency work.
+
+Once an application is runned, a special dispatchqueue called *main* queue is created, the work items enqueued to this dispatchqueue are executed serially. You can get the queue by the     *main* method.
+
+*** serial and concurrent
+
+- A dispatchQueue can be serial or concurrent.
+
+
+You can perform concurrent work items through:
+
+    Dispatch.concurrentPerform(iterations:Int,work item:(Int)->Void)
+Note that the method will cause the thread blocked. You can wrap this method in another dispatchqueue's ~async~ method.
+
+ - Some global dispatchqueue with concurrent ability are created by the system, you can get them by:
+
+#+BEGIN_SRC swift
+  DispatchQueue.global(qos:.background)
+#+END_SRC
+
+*** for c
+
+---
+
+*** RunLoop
+You do not create a runloop yourself, instead you get the main runloop of the main thread through:
+
+    //:swift
+    RunLoop.main
+Every application has a main thread, and every thread has a runloop to do things with timers, mouse events etc.
+
+Through the two main methods:
+#+BEGIN_SRC swift
+  RunLoop.main.perform()
+  RunLoop.main.addTimer()
+#+END_SRC
+you can perform blocks or add timer to the main runloop.
+*Note*: Do work in the runloop can cause block.
+
+*** DispatchQueue
+The dispatchQueue support both sync and async operations.
+#+BEGIN_SRC swift
+  DispatchQueue.main.sync(_ block:)
+  DispatchQueue.main.async(_ block:)
+#+END_SRC
+The aync method will not cause the UI block.

@@ -1,0 +1,74 @@
+** xmlrequest
+#+BEGIN_SRC js
+   download() {
+  this.xhr && this.xhr.abort();
+
+  var xhr = this.xhr || new XMLHttpRequest();
+  xhr.onreadystatechange = () => {
+    if (xhr.readyState === xhr.HEADERS_RECEIVED) {
+      var contentSize = parseInt(xhr.getResponseHeader('Content-Length'), 10);
+      this.setState({
+        contentSize: contentSize,
+        downloaded: 0,
+      });
+    } else if (xhr.readyState === xhr.LOADING) {
+      this.setState({
+        downloaded: xhr.responseText.length,
+      });
+    } else if (xhr.readyState === xhr.DONE) {
+      this.setState({
+        downloading: false,
+      });
+      if (this.cancelled) {
+        this.cancelled = false;
+        return;
+      }
+      if (xhr.status === 200) {
+        alert('Download complete!');
+      } else if (xhr.status !== 0) {
+        alert('Error: Server returned HTTP status of ' + xhr.status + ' ' + xhr.responseText);
+      } else {
+        alert('Error: ' + xhr.responseText);
+      }
+    }
+  };
+  xhr.open('GET', 'http://www.gutenberg.org/cache/epub/100/pg100.txt');
+  xhr.send();
+  this.xhr = xhr;
+
+  this.setState({downloading: true});
+  }
+
+  componentWillUnmount() {
+  this.cancelled = true;
+  this.xhr && this.xhr.abort();
+  }
+#+END_SRC
+---
+需要注意的几点
+
+ - 在 componentWillUnmount() 函数里,要将存在的 XMLHttpRequest 对象都停止掉.因为一个元件被 unmount(例如在一个scene 在 navigator.pop() 出来后) 后,异步的进程却不会停止,如果在这个进程里还有类似于
+
+        this.setState()
+    之类对这个元件的操作,就会出错.
+ - 在 fetchData,download 之类进行异步存取的函数里,先将原先可能存在这个同样的进程停止掉,如果不准备支持断点下载的话..
+
+
+        this.xhr && this.xhr.abort();
+因为同时只能在本机和服务器之间建立一条连接(?)
+
+---
+对超时的处理:
+#+BEGIN_SRC js
+  xhr.open('GET',url,true)
+  // the timeout must be in the open() and send() method
+  xhr.timeout = 3000
+  xhr.ontimeout = (e)=>{ dosomething() }
+  xhr.send()
+#+END_SRC
+
+RefreshControl 的使用比较简单,但是需要注意的是,为了用户的友好性,在刚进入具有异步读取进程的 scene 之后,第一次被动的执行,不应该显示indicator. 在之后由用户主动刷新的时候,才显示 indicator.
+
+** fetch
+
+** websocket

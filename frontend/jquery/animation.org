@@ -1,0 +1,42 @@
+#+BEGIN_SRC js
+  hide()
+  show()
+  toggle()
+
+  fadeIn()
+  fadeOut()
+  fadeToggle()
+
+  slideUp()
+  slideDown()
+  slideToggle()
+#+END_SRC
+
+** .animate()
+#+BEGIN_SRC js
+    $ele.animate({
+        //css properties
+    })
+#+END_SRC
+
+The animations are queued by jquery in a queue. Use `next()` to make a continuously animation.
+#+BEGIN_SRC js
+    $ele.queue('QName',function(){
+    })
+    .queue('QName',function(){
+
+    })
+    ...
+
+    //or
+    $ele.queue('QName',function(next){
+    // do something
+    next()
+    }
+    .queue('QName',function(next){
+    next()
+    })
+
+#+END_SRC
+    ...
+The next will automatically `dequeue` function when executed.Otherwise you must manually dequeue the function using `dequeue()`.

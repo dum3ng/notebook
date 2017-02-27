@@ -1,0 +1,84 @@
+** net server
+The general way to create a TCP server :
+#+BEGIN_SRC js
+  var net = require('net')
+  var server = net.createServer(function (socket) {
+     // socket handling logic
+     var response = 'something'
+     socket.end(response)
+   })
+   server.listen(8000)
+#+END_SRC
+
+** http server
+#+BEGIN_SRC js
+  var http = require('http')
+  var fs = require('fs')
+   var server = http.createServer(function (req, res) {
+     // request handling logic...
+     res.writeHeader(200,{'content-type':'text/plain'})
+     fs.createReadStream(somefile)
+     .pipe(res)
+   })
+   server.listen(8000)
+#+END_SRC
+
+*** a url request
+
+ Tips:
+ The request has a url property, and the url module of nodejs can parse it.
+ The parse result is an object like this:
+#+BEGIN_SRC js
+      Url {
+        protocol: null,
+        slashes: null,
+        auth: null,
+        host: null,
+        port: null,
+        hostname: null,
+        hash: null,
+        search: '?iso=2016-06-15T12:04:53.161Z',
+        query: { iso: '2016-06-15T12:04:53.161Z' },
+        pathname: '/api/parsetime',
+        path: '/api/parsetime?iso=2016-06-15T12:04:53.161Z',
+        href: '/api/parsetime?iso=2016-06-15T12:04:53.161Z'
+  }
+#+END_SRC
+---
+A demo program.
+#+BEGIN_SRC js
+  var http = require('http')
+  var url = require('url')
+
+  function parsetime (time) {
+    return {
+      hour: time.getHours(),
+      minute: time.getMinutes(),
+      second: time.getSeconds()
+    }
+  }
+
+  function unixtime (time) {
+    return { unixtime : time.getTime() }
+  }
+
+  var server = http.createServer(function (req, res) {
+    var parsedUrl = url.parse(req.url, true)
+    var time = new Date(parsedUrl.query.iso)
+    var result
+
+    if (/^\/api\/parsetime/.test(req.url))
+      result = parsetime(time)
+    else if (/^\/api\/unixtime/.test(req.url))
+      result = unixtime(time)
+
+    if (result) {
+      res.writeHead(200, { 'Content-Type': 'application/json' })
+      res.end(JSON.stringify(result))
+    } else {
+      res.writeHead(404)
+      res.end()
+    }
+  })
+  server.listen(Number(process.argv[2]))
+#+END_SRC

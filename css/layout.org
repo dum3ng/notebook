@@ -1,0 +1,87 @@
+**display**
+不同的标签具有不同的默认行为
+inline
+block
+inline-block
+三种主要的显示形式.
+none:将元素移除出文档渲染流
+flex
+利用 flex 将元素居中
+#+BEGIN_SRC css
+    .outer{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    }
+#+END_SRC
+#+BEGIN_SRC html
+  <div class='outer'>
+      <div>center1</div>
+      <div>center2</div>
+      <div>center3</div>
+  </div>
+#+END_SRC
+[[./images/flex-box-center.png]]
+
+原始的 box module 是基于内容大小的, padding 和 border 的宽度都会增加 box 的实际大小.这是违反直觉的.添加
+#+BEGIN_SRC css
+   * {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+#+END_SRC
+这就使所有的 html 元素都按照新的盒模型做出行为.
+
+---
+*** position
+- static :: 默认
+- fixed :: 固定,相对于视口
+- relative :: 相对于 static 下自身的位置
+- absolute :: 相对于最近的一个 relatvie 或 absolute 祖先元素的位置.
+
+*Tips:* The a relative element has an absolute child, then the child's origin is relative to left-bottom point of content. That is to say the parent should generally not have border width or padding, otherwise will behave not like what you think.
+Treat the parent as a wrapper.
+
+---
+**min-width/min-height  max-width/max-height**
+以及百分比来设置元素大小
+
+---
+*** media query
+#+BEGIN_SRC css
+  @media screen and (min-width:768px) and (orientation:landscape) {
+
+  }
+
+/* 逗号表示逻辑运算 or:*/
+    @media (min-width: 700px), handheld and (orientation: landscape) { ... }
+
+/*一般情况,我们都只使用*/
+    @media (min-width:768px){
+
+    }
+#+END_SRC
+
+ ---
+*** layout
+ 浮动布局. 利用 float:xxx
+当浮动的元素比非浮动的元素的高度要高时,会在父级元素发生溢出.往往需要一个:
+#+BEGIN_SRC css
+  .clearfix{
+      overflow:auto;
+      }
+#+END_SRC
+ 这样由浏览器来决定如何应对溢出.一般情况下都会增加父级元素的高度.
+
+>flex 布局
+#+BEGIN_SRC css
+  .outer{
+      display:flex;
+      }
+  //html
+  <div class='outer'>
+
+  </div>
+#+END_SRC

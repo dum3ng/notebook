@@ -1,0 +1,18 @@
+** trigger an event
+`.triggerHandler( eventType )` executes all handlers bound with jQuery for the event type. It will also execute any method called `on{eventType}()` found on the element. The behavior of this method is similar to  `.trigger()`, with the following exceptions:
+
+- The `.triggerHandler( "event" )` method will not call `.event()` on the element it is triggered on. This means `.triggerHandler( "submit" )` on a form will not call `.submit()` on the form.
+- While `.trigger()` will operate on all elements matched by the jQuery object, `.triggerHandler()` only affects the first matched element.
+- Events triggered with `.triggerHandler()` do not bubble up the DOM hierarchy; if they are not handled by the target element directly, they do nothing.
+- Instead of returning the jQuery object (to allow chaining), `.triggerHandler()` returns whatever value was returned by the last handler it caused to be executed. If no handlers are triggered, it returns undefined
+
+** customize event
+#+BEGIN_SRC js
+
+  var element = document.getElementById('test')
+  element.addEventListener('custom',callback)
+
+  //dispatch
+  var event = new Event('custom')
+  element.dispatchEvent(event)
+#+END_SRC

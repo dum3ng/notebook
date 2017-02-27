@@ -1,0 +1,70 @@
+** try
+When using a function throws some exception, you should process the error either in a `do-catch` block or use `try?` or `try!` to make a type cast.
+#+BEGIN_SRC swift
+  do {
+      var a = someThrowFunction()
+  } catch {
+      print("error occured")
+  }
+#+END_SRC
+or
+#+BEGIN_SRC swift
+  //will create an optional
+  var a = try? someThrowFunction()
+
+  //will cause a runtime error if exception throwed
+  var b = try! someThrowFunction()
+#+END_SRC
+
+** as
+Although the `as` has the same typing with its permutation keywords `as?` and `as!`, in fact they does different works.
+In type checking and downcasting, `is` is in the same group with `as?` and `as!`.
+
+*** is
+Use `is` to check if an object is an instance of a class or its subclasses.
+
+*** as
+Used when upcasting.
+i.e.
+
+    String as Any
+*** as? and as!
+Downcasting maybe failed, so using `as?` to get an optional value.
+And use `as!` when you are sure the downcasting will succeed.
+
+*** dynamic
+#+BEGIN_QUOTE
+Apply this modifier to any member of a class that can be represented by Objective-C. When you mark a member declaration with the dynamic modifier, access to that member is always dynamically dispatched using the Objective-C runtime. Access to that member is never inlined or devirtualized by the compiler.
+Because declarations marked with the dynamic modifier are dispatched using the Objective-C runtime, they’re implicitly marked with the objc attribute.
+#+END_QUOTE
+:: Apple Inc. “The Swift Programming Language (Swift 3)”。 iBooks.
+
+*** final
+-    class :: will not be subclassed.
+-   method :: will not be overrided.
+-   variable :: will not be changed in subclasses.
+
+*** lazy
+    The variable with a lazy declaration prefix will be evaluted only when it is first time accessed.
+
+** type check
+*** use `is`
+#+BEGIN_SRC swift
+  var three:Int = 3
+  if three is Int {
+
+  }
+#+END_SRC
+
+*** use Mirror struct
+#+BEGIN_SRC swift
+  var s = "hello"
+  let mirror = Mirror(reflecting:s)
+  if mirror.subjectType == String.self {
+
+  }
+#+END_SRC
+***  use as
+     Use `as?` to get an optional value contains the original value and  `as!` to enforce wrap the value the target type.
+
+     The `as` can be used in `switch` statement to check the type.

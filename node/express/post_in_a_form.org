@@ -1,0 +1,90 @@
+A form tag is like this :
+
+#+BEGIN_SRC html
+  <form  action="action_page.php" method="post" target="_blank" accept-charset="UTF-8"
+  enctype="application/x-www-form-urlencoded" autocomplete="off" novalidate>
+  .
+  elements
+  .
+  <input name='username' type='text' placeholder='username'/>
+
+  </form>
+#+END_SRC
+
+You should add a **name** property to every input you want their value appear in the post body.
+
+---
+In express, you should use body-parser to parse the url to make sure the *req.body* is not empty.
+#+BEGIN_SRC js
+  var bodyParser = require('body-parser');
+  app.use(bodyParser.urlencoded({extended:true}));
+#+END_SRC
+
+For the *enctype* property, there are three types:
+
+-    application/x-www-form-urlencoded (the default)
+-    multipart/form-data
+-    text/plain
+
+Unless you have an input field which's type is *file*:
+
+    <input type='file' />
+you donot need to set this property.
+And if you want to upload somefile , you will want to use *multer* as the parser.
+
+See more [[http://stackoverflow.com/questions/4526273/what-does-enctype-multipart-form-data-mean][detail]]
+
+** use ajax
+If you are using ajax in jquery, and want to post to current page, you should :
+#+BEGIN_SRC js
+  $.ajax({
+      url:window.location,
+      data:...
+  })
+#+END_SRC
+*DO NOT* omit the url!
+
+** Best Pratices
+There are two ways to post.
+*** use the form directly
+- Set the form's attribute to make a post without javascript
+#+BEGIN_SRC html
+  <form action='/login' role='form' method='POST' enctype='application/x-www-form-urlencoded' >
+
+      <button type='submit'>submit</button>
+  </form>
+#+END_SRC
+- And in the server route, you should add authentication options to the passport since there is no place to run other method at the client side.
+#+BEGIN_SRC js
+  app.post('/login',passport.authenticate('local',{
+      successRedirect:'/',
+      failureRedirect:'/login',
+      failureFlash:true
+  })
+#+END_SRC
+*** Use Ajax
+- Since the post method in jquery does not expect a redirect response, so you can NOT redirect to other page when using ajax( ? ).
+- You should do authenticate and send a message to tell the client whether success or failed.
+- At client side, use the *window.location* to redirect to other page.
+#+BEGIN_SRC js
+  //server
+    app.post('/login',passport.authenticate('local'),function(req,res){
+        res.send('success')
+    })
+    //client
+    $.ajax({
+        url:window.location,
+        data:myData,
+        method:'POST'
+    }).done(function(msg){
+        if(msg==='success')
+            window.location='/'
+    })
+#+END_SRC
+
+(at current)
+Always use ajax to make a get or post instead of using the form to trigger the method.
+Benifits you can get using ajax:
+ - get more control on the data you send
+ - you donot have to leave current page
+ - can do something in a callback function

@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>howto: initial_setup_on_ubuntu16.04</title>
+<!-- 2017-02-26 Sun 15:08 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="杜猛" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">howto: initial_setup_on_ubuntu16.04</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. Introduction</a></li>
+<li><a href="#sec-2">2. Step One — Root Login</a>
+<ul>
+<li><a href="#sec-2-1">2.1. About Root</a></li>
+</ul>
+</li>
+<li><a href="#sec-3">3. Step Two — Create a New User</a></li>
+<li><a href="#sec-4">4. Step Three — Root Privileges</a></li>
+<li><a href="#sec-5">5. Step Four — Add Public Key Authentication (Recommended)</a>
+<ul>
+<li><a href="#sec-5-1">5.1. Copy the Public Key</a>
+<ul>
+<li><a href="#sec-5-1-1">5.1.1. Option 1: Use ssh-copy-id</a></li>
+<li><a href="#sec-5-1-2">5.1.2. Option 2: Manually Install the Key</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#sec-6">6. Step Five — Disable Password Authentication (Recommended)</a></li>
+<li><a href="#sec-7">7. Step Six — Test Log In</a></li>
+<li><a href="#sec-8">8. Step Seven — Set Up a Basic Firewall</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Introduction</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+When you first create a new Ubuntu 16.04 server, there are a few configuration steps that you should take early on as part of the basic setup. This will increase the security and usability of your server and will give you a solid foundation for subsequent actions.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> Step One — Root Login</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+To log into your server, you will need to know your server's public IP address. You will also need the password or, if you installed an SSH key for authentication, the private key for the "root" user's account. If you have not already logged into your server, you may want to follow the first tutorial in this series, How to Connect to Your Droplet with SSH, which covers this process in detail.
+If you are not already connected to your server, go ahead and log in as the root user using the following command (substitute the highlighted word with your server's public IP address):
+<code>ssh root@SERVER_IP_ADDRESS</code>
+Complete the login process by accepting the warning about host authenticity, if it appears, then providing your root authentication (password or private key). If it is your first time logging into the server with a password, you will also be prompted to change the root password.
+</p>
+</div>
+
+<div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1"><span class="section-number-3">2.1</span> About Root</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+The root user is the administrative user in a Linux environment that has very broad privileges. Because of the heightened privileges of the root account, you are actually discouraged from using it on a regular basis. This is because part of the power inherent with the root account is the ability to make very destructive changes, even by accident.
+The next step is to set up an alternative user account with a reduced scope of influence for day-to-day work. We'll teach you how to gain increased privileges during the times when you need them.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> Step Two — Create a New User</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Once you are logged in as root, we're prepared to add the new user account that we will use to log in from now on.
+This example creates a new user called "sammy", but you should replace it with a username that you like:
+adduser sammy
+You will be asked a few questions, starting with the account password.
+Enter a strong password and, optionally, fill in any of the additional information if you would like. This is not required and you can just hit ENTER in any field you wish to skip.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> Step Three — Root Privileges</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+Now, we have a new user account with regular account privileges. However, we may sometimes need to do administrative tasks.
+To avoid having to log out of our normal user and log back in as the root account, we can set up what is known as "superuser" or root privileges for our normal account. This will allow our normal user to run commands with administrative privileges by putting the word sudo before each command.
+To add these privileges to our new user, we need to add the new user to the "sudo" group. By default, on Ubuntu 16.04, users who belong to the "sudo" group are allowed to use the sudo command.
+As root, run this command to add your new user to the sudo group (substitute the highlighted word with your new user):
+usermod -aG sudo sammy
+Now your user can run commands with superuser privileges! For more information about how this works, check out this sudoers tutorial.
+If you want to increase the security of your server, follow the rest of the steps in this tutorial.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> Step Four — Add Public Key Authentication (Recommended)</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+The next step in securing your server is to set up public key authentication for your new user. Setting this up will increase the security of your server by requiring a private SSH key to log in.
+Generate a Key Pair
+</p>
+
+<p>
+If you do not already have an SSH key pair, which consists of a public and private key, you need to generate one. If you already have a key that you want to use, skip to the Copy the Public Key step.
+To generate a new key pair, enter the following command at the terminal of your local machine (ie. your computer):
+</p>
+
+<p>
+<code>ssh-keygen</code>
+</p>
+
+<p>
+Assuming your local user is called "localuser", you will see output that looks like the following:
+</p>
+<blockquote>
+<p>
+ssh-key genoutputGenerating  public/private rsa key  pair.
+Enter file in which to save the key(<i>Users/localuser</i>.ssh/id<sub>rsa</sub>):
+</p>
+</blockquote>
+
+<p>
+Hit return to accept this file name and path (or enter a new name).
+Next, you will be prompted for a passphrase to secure the key with. You may either enter a passphrase or leave the passphrase blank.
+Note: If you leave the passphrase blank, you will be able to use the private key for authentication without entering a passphrase. If you enter a passphrase, you will need both the private key and the passphrase to log in. Securing your keys with passphrases is more secure, but both methods have their uses and are more secure than basic password authentication.
+This generates a private key, id<sub>rsa</sub>, and a public key, id<sub>rsa</sub>.pub, in the .ssh directory of thelocaluser's home directory. Remember that the private key should not be shared with anyone who should not have access to your servers!
+</p>
+</div>
+
+<div id="outline-container-sec-5-1" class="outline-3">
+<h3 id="sec-5-1"><span class="section-number-3">5.1</span> Copy the Public Key</h3>
+<div class="outline-text-3" id="text-5-1">
+<p>
+After generating an SSH key pair, you will want to copy your public key to your new server. We will cover two easy ways to do this.
+</p>
+</div>
+
+<div id="outline-container-sec-5-1-1" class="outline-4">
+<h4 id="sec-5-1-1"><span class="section-number-4">5.1.1</span> Option 1: Use ssh-copy-id</h4>
+<div class="outline-text-4" id="text-5-1-1">
+<p>
+If your local machine has the ssh-copy-id script installed, you can use it to install your public key to any user that you have login credentials for.
+Run the ssh-copy-id script by specifying the user and IP address of the server that you want to install the key on, like this:
+ssh-copy-id sammy@SERVER<sub>IP</sub><sub>ADDRESS</sub>
+After providing your password at the prompt, your public key will be added to the remote user's.ssh/authorized<sub>keys</sub> file. The corresponding private key can now be used to log into the server.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-5-1-2" class="outline-4">
+<h4 id="sec-5-1-2"><span class="section-number-4">5.1.2</span> Option 2: Manually Install the Key</h4>
+<div class="outline-text-4" id="text-5-1-2">
+<p>
+Assuming you generated an SSH key pair using the previous step, use the following command at the terminal of your local machine to print your public key (id<sub>rsa</sub>.pub):
+<code>cat ~/.ssh/id_rsa.pub</code>
+This should print your public SSH key, which should look something like the following:
+</p>
+
+<p>
+
+1
+id<sub>rsa</sub>.pubcontentsssh-rsaAAAAB3NzaC1yc2EAAAADAQABAAABAQDBGTO0tsVejssuaYR5R3Y
+    /i73SppJAhme1dH7W2c47d4gOqB4izP0+fRLfvbz/tnXFz4iOP/H6eCV05hqUhF
+    +KYRxt9Y8tVMrpDZR2l75o6+xSbUOMu6xN+uVF0T9XzKcxmzTmnV7Na5up3QM3DoSRYX
+    /EP3utr2+zAqpJIfKPLdA74w7g56oYWI9blpnpzxkEd3edVJOivUkpZ4JoenWManvIaSdMTJXMy
+    3MtlQhva+j9CgguyVbUkdzK9KKEuah+pFZvaugtebsU+bllPTB0nlXGIJk98Ie9ZtxuY3nCKneB
+    +KjKiXrAvXUPCI9mWkYS/1rggpFmu3HbXBnWSUdflocaluser@machine.local
+Select the public key, and copy it to your clipboard.
+To enable the use of SSH key to authenticate as the new remote user, you must add the public key to a special file in the user's home directory.
+On the server, as the root user, enter the following command to temporarily switch to the new user (substitute your own user name):
+<code>su - sammy</code>
+Now you will be in your new user's home directory.
+Create a new directory called .ssh and restrict its permissions with the following commands:
+</p>
+<pre class="example">
+mkdir ~/.ssh
+chmod 700 ~/.ssh
+</pre>
+<p>
+Now open a file in .ssh called authorized<sub>keys</sub> with a text editor. We will use nano to edit the file:
+<code>nano ~/.ssh/authorized_keys</code>
+Now insert your public key (which should be in your clipboard) by pasting it into the editor.
+Hit CTRL-x to exit the file, then y to save the changes that you made, then ENTER to confirm the file name.
+Now restrict the permissions of the authorized<sub>keys</sub> file with this command:
+<code>chmod 600 ~/.ssh/authorized_keys</code>
+Type this command once to return to the root user:
+<code>exit</code>
+Now your public key is installed, and you can use SSH keys to log in as your user.
+To read more about how key authentication works, read this tutorial: How To Configure SSH Key-Based Authentication on a Linux Server.
+Next, we'll show you how to increase your server's security by disabling password authentication.
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6"><span class="section-number-2">6</span> Step Five — Disable Password Authentication (Recommended)</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+Now that your new user can use SSH keys to log in, you can increase your server's security by disabling password-only authentication. Doing so will restrict SSH access to your server to public key authentication only. That is, the only way to log in to your server (aside from the console) is to possess the private key that pairs with the public key that was installed.
+Note: Only disable password authentication if you installed a public key to your user as recommended in the previous section, step four. Otherwise, you will lock yourself out of your server!
+To disable password authentication on your server, follow these steps.
+As root or your new sudo user, open the SSH daemon configuration:
+sudo nano /etc/ssh/sshd<sub>config</sub>
+Find the line that specifies PasswordAuthentication, uncomment it by deleting the preceding #, then change its value to "no". It should look like this after you have made the change:
+<code>sshd_config — Disable password authentication</code>
+</p>
+
+<p>
+PasswordAuthenticationno
+Here are two other settings that are important for key-only authentication and are set by default. If you haven't modified this file before, you do not need to change these settings:
+sshd<sub>config</sub> — Important defaults
+</p>
+
+<p>
+PubkeyAuthenticationyes
+ChallengeResponseAuthenticationno
+When you are finished making your changes, save and close the file using the method we went over earlier (CTRL-X, then Y, then ENTER).
+Type this to reload the SSH daemon:
+sudo systemctl reload sshd
+Password authentication is now disabled. Your server is now only accessible with SSH key authentication.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-7" class="outline-2">
+<h2 id="sec-7"><span class="section-number-2">7</span> Step Six — Test Log In</h2>
+<div class="outline-text-2" id="text-7">
+<p>
+Now, before you log out of the server, you should test your new configuration. Do not disconnect until you confirm that you can successfully log in via SSH.
+In a new terminal on your local machine, log in to your server using the new account that we created. To do so, use this command (substitute your username and server IP address):
+ssh sammy@SERVER<sub>IP</sub><sub>ADDRESS</sub>
+If you added public key authentication to your user, as described in steps four and five, your private key will be used as authentication. Otherwise, you will be prompted for your user's password.
+Note about key authentication: If you created your key pair with a passphrase, you will be prompted to enter the passphrase for your key. Otherwise, if your key pair is passphrase-less, you should be logged in to your server without a password.
+Once authentication is provided to the server, you will be logged in as your new user.
+Remember, if you need to run a command with root privileges, type "sudo" before it like this:
+sudo command<sub>to</sub><sub>run</sub>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-8" class="outline-2">
+<h2 id="sec-8"><span class="section-number-2">8</span> Step Seven — Set Up a Basic Firewall</h2>
+<div class="outline-text-2" id="text-8">
+<p>
+Ubuntu 16.04 servers can use the UFW firewall to make sure only connections to certain services are allowed. We can set up a basic firewall very easily using this application.
+Different applications can register their profiles with UFW upon installation. These profiles allow UFW to manage these applications by name. OpenSSH, the service allowing us to connect to our server now, has a profile registered with UFW.
+You can see this by typing:
+<code>sudo ufw app list</code>
+</p>
+
+<p>
+OutputAvailableapplications:
+<code>OpenSSH</code>
+We need to make sure that the firewall allows SSH connections so that we can log back in next time. We can allow these connections by typing:
+<code>sudo ufw allow OpenSSH</code>
+Afterwards, we can enable the firewall by typing:
+<code>sudo ufw enable</code>
+Type "y" and press ENTER to proceed. You can see that SSH connections are still allowed by typing:
+<code>sudo ufw status</code>
+</p>
+
+<blockquote>
+<p>
+OutputStatus:active
+To          Action        From
+-&#x2014;        &#x2013;&#x2014;           &#x2014;
+OpenSSH     ALLOW     Anywhere
+OpenSSH(v6) ALLOW       Anywhere(v6)
+</p>
+</blockquote>
+
+<p>
+If you install and configure additional services, you will need to adjust the firewall settings to allow acceptable traffic in. You can learn some common UFW operations in this guide.</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: 杜猛</p>
+<p class="date">Created: 2017-02-26 Sun 15:08</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 25.1.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

@@ -1,0 +1,46 @@
+** First rule
+You should add :
+#+BEGIN_SRC html
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+#+END_SRC
+to every page you write. Otherwise the page will not be response to different devices.
+
+---
+** Always Design for Mobile First
+Mobile First means designing for mobile before designing for desktop or any other device (This will make the page display faster on smaller devices).
+
+This means that we must make some changes in our CSS.
+
+Instead of changing styles when the width gets smaller than 768px, we should change the design when the width gets larger than 768px.
+
+---
+** Media query
+The general expresssion is
+#+BEGIN_SRC css
+  @media screen and (min-width:768px){
+
+  }
+  @media screen and (orientation:landscape){
+
+  }
+#+END_SRC
+Sometimes you may need to use *min-device-width* instead of *min-width*. So the judgement is just on the device and if on the browser and you change the size of browser there will have no change.
+
+---
+** max-width
+If the width of an element is set to 100%:
+#+BEGIN_SRC css
+  {
+      width:100%;
+  }
+#+END_SRC
+Then it is relative to its parent.
+And if you set it to :
+
+    {
+        max-width:100%;
+    }
+Then it is relative to the original size itself.
+Usually used on the *img* tag.
+
+---

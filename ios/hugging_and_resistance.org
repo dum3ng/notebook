@@ -1,0 +1,43 @@
+** hugging
+hugging is for the grow behaviour. A view with bigger hugging priority will have a higher priority to keep its *hugging*, say, not to grow. That means a view with less hugging will be stretched first by the system if the superview's size changed.
+
+** resistance
+complementary to hugging.
+A higher resistance level will be more solid to not to shrink.
+That is to say, if you want a view to shrink you should set a smaller resistance priority.
+
+** tip
+Both =hugging=  and =resistance= is for horizontal and vertical axis.
+
+To set them programtically,
+#+BEGIN_SRC swift
+    someView.setContentCompressionResistancePriority(UILayoutPriorityRequired, forAxis: .Horizontal)
+
+    anotherView.setContentHuggingResistancePriority(UILayoutPriorityDefaultLow, forAxis: .Horizontal)
+#+END_SRC
+*bold* /italitic/  /boldandiatl/ +sdf+ -sdf- s /sdf/ (sdkfj)
+ _sdf_  */bbol/*
+
+---
+
+-----
+[]
++++++
+.....
+     #+BEGIN_VERSE
+      Great clouds overhead
+      Tiny black birds rise and fall
+      Snow covers Emacs
+
+          -- AlexSchroeder
+     #+END_VERSE
+
+     #+BEGIN_QUOTE
+     Everything should be made as simple as possible,
+     but not any simpler -- Albert Einstein
+     #+END_QUOTE
+center
+    #+BEGIN_CENTER
+     Everything should be made as simple as possible, \\
+     but not any simpler
+     #+END_CENTER
